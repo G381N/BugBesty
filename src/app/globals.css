@@ -1,0 +1,256 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0F0F0F;
+  --foreground: #FFFFFF;
+  --primary: #FF5722;
+  --primary-hover: #F4511E;
+  --secondary: #1E1E1E;
+  --secondary-hover: #2D2D2D;
+  --accent: #FF9800;
+  --card-bg: rgba(30, 30, 30, 0.6);
+  --text-secondary: #9CA3AF;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply text-foreground opacity-70 hover:opacity-100 transition-colors duration-200;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 bg-primary hover:bg-primary-hover text-white rounded-lg 
+           transition-all duration-300 transform hover:scale-105 font-medium;
+  }
+
+  .feature-card {
+    @apply p-6 rounded-xl backdrop-blur-md bg-card-bg border border-white/10
+           hover:border-opacity-30 hover:border-primary transition-all duration-300;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  }
+
+  .hero-gradient {
+    background: radial-gradient(circle at center, var(--primary) 0%, transparent 70%);
+    opacity: 0.1;
+  }
+
+  .dashboard-card {
+    @apply p-6 rounded-xl bg-card-bg border border-white/10
+           hover:border-opacity-30 hover:border-primary transition-all duration-300;
+  }
+
+  .modal-overlay {
+    @apply fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm;
+  }
+
+  .modal-content {
+    @apply bg-secondary p-6 rounded-xl shadow-xl;
+  }
+
+  .file-upload-area {
+    @apply border-2 border-dashed border-white/20 rounded-lg p-8 
+           hover:border-opacity-50 hover:border-primary transition-colors cursor-pointer;
+  }
+
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+  
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+  
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar but keep functionality */
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Animation keyframes */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-10px) translateX(10px);
+  }
+  50% {
+    transform: translateY(0) translateX(20px);
+  }
+  75% {
+    transform: translateY(10px) translateX(10px);
+  }
+}
+
+.animate-float {
+  animation: float 20s ease-in-out infinite;
+}
+
+/* Add these new keyframes */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-reverse {
+  animation-direction: reverse;
+}
+
+/* Add these new keyframes to your existing animations section */
+@keyframes scanning {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes radar {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Add these new utility classes */
+.animate-scanning {
+  animation: scanning 2s linear infinite;
+}
+
+.animate-radar {
+  animation: radar 4s linear infinite;
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Modify existing spin animation for smoother rotation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Add these styles to your global CSS or a component-specific CSS file */
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #4caf50;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.delete-button:disabled {
+  background-color: #ffcdd2;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #f44336;
+  margin: 10px 0;
+}
+
+.deletion-progress {
+  margin: 20px 0;
+}

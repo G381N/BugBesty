@@ -1,0 +1,23 @@
+declare namespace NodeJS {
+  interface ProcessEnv {
+    MONGODB_URI: string;
+    NEXTAUTH_SECRET: string;
+    NEXTAUTH_URL: string;
+    NEXT_PUBLIC_BEVIGIL_API_KEY: string;
+    NEXT_PUBLIC_BINARYEDGE_API_KEY: string;
+    NEXT_PUBLIC_BUILTWITH_API_KEY: string;
+    NEXT_PUBLIC_CENSYS_API_ID: string;
+    NEXT_PUBLIC_CENSYS_API_SECRET: string;
+    NEXT_PUBLIC_CERTSPOTTER_API_KEY: string;
+    NEXT_PUBLIC_CHAOS_API_KEY: string;
+    NEXT_PUBLIC_FOFA_API_KEY: string;
+    NEXT_PUBLIC_FULLHUNT_API_KEY: string;
+    NEXT_PUBLIC_GITHUB_API_KEY: string;
+    NEXT_PUBLIC_INTELX_API_KEY: string;
+    NEXT_PUBLIC_LEAKIX_API_KEY: string;
+    NEXT_PUBLIC_NETLAS_API_KEY: string;
+    NEXT_PUBLIC_GEMINI_API_KEY: string;
+    NEXT_PUBLIC_VIRUSTOTAL_API_KEY: string;
+    NEXT_PUBLIC_BOLSTER_API_KEY: string;
+  }
+} 

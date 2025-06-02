@@ -1,0 +1,26 @@
+{
+  "functions": {
+    "src/app/api/**/*": {
+      "memory": 1024,
+      "maxDuration": 15
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1",
+      "headers": {
+        "Cache-Control": "no-store, max-age=0"
+      }
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/tasks/process",
+      "schedule": "0 0 * * *"
+    }
+  ],
+  "github": {
+    "silent": true
+  }
+} 
