@@ -223,7 +223,7 @@ async function fetchSubdomainsFromCensys(domain: string) {
 async function fetchSubdomainsFromSecurityTrails(domain: string) {
   try {
     console.log('Fetching subdomains from SecurityTrails for:', domain);
-    const API_KEY = process.env.NEXT_PUBLIC_SECURITYTRAILS_API_KEY;
+    const API_KEY = process.env.SECURITYTRAILS_API_KEY;
     
     // For testing - mock the results with real patterns if API fails
     const mockSubdomains = [

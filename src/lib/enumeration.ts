@@ -1,22 +1,25 @@
 import axios from "axios";
 
-// Get API keys from environment variables
+// Get API keys from environment variables (now using server-side variables)
 const API_KEYS = {
-  BEVIGIL: process.env.NEXT_PUBLIC_BEVIGIL_API_KEY,
-  BINARYEDGE: process.env.NEXT_PUBLIC_BINARYEDGE_API_KEY,
-  BUILTWITH: process.env.NEXT_PUBLIC_BUILTWITH_API_KEY,
-  CENSYS_ID: process.env.NEXT_PUBLIC_CENSYS_API_ID,
-  CENSYS_SECRET: process.env.NEXT_PUBLIC_CENSYS_API_SECRET,
-  CERTSPOTTER: process.env.NEXT_PUBLIC_CERTSPOTTER_API_KEY,
-  CHAOS: process.env.NEXT_PUBLIC_CHAOS_API_KEY,
-  FOFA: process.env.NEXT_PUBLIC_FOFA_API_KEY,
-  FULLHUNT: process.env.NEXT_PUBLIC_FULLHUNT_API_KEY,
-  GITHUB: process.env.NEXT_PUBLIC_GITHUB_API_KEY,
-  INTELX: process.env.NEXT_PUBLIC_INTELX_API_KEY,
-  LEAKIX: process.env.NEXT_PUBLIC_LEAKIX_API_KEY,
-  NETLAS: process.env.NEXT_PUBLIC_NETLAS_API_KEY,
-  SECURITYTRAILS: process.env.NEXT_PUBLIC_SECURITYTRAILS_API_KEY,
-  SHODAN: process.env.NEXT_PUBLIC_SHODAN_API_KEY,
+  BEVIGIL: process.env.BEVIGIL_API_KEY,
+  BINARYEDGE: process.env.BINARYEDGE_API_KEY,
+  BUILTWITH: process.env.BUILTWITH_API_KEY,
+  CENSYS_ID: process.env.CENSYS_API_ID,
+  CENSYS_SECRET: process.env.CENSYS_API_SECRET,
+  CERTSPOTTER: process.env.CERTSPOTTER_API_KEY,
+  CHAOS: process.env.CHAOS_API_KEY,
+  FOFA: process.env.FOFA_API_KEY,
+  FULLHUNT: process.env.FULLHUNT_API_KEY,
+  GITHUB: process.env.GITHUB_API_KEY,
+  INTELX: process.env.INTELX_API_KEY,
+  LEAKIX: process.env.LEAKIX_API_KEY,
+  NETLAS: process.env.NETLAS_API_KEY,
+  SECURITYTRAILS: process.env.SECURITYTRAILS_API_KEY,
+  SHODAN: process.env.SHODAN_API_KEY,
+  VIRUSTOTAL: process.env.VIRUSTOTAL_API_KEY,
+  BOLSTER: process.env.BOLSTER_API_KEY,
+  GEMINI: process.env.GEMINI_API_KEY,
 };
 
 // Define API source handler type
@@ -27,7 +30,18 @@ const API_SOURCES: Array<{ name: string; handler: ApiHandler }> = [
   { name: "securitytrails", handler: fetchFromSecurityTrails },
   { name: "censys", handler: fetchFromCensys },
   { name: "certspotter", handler: fetchFromCertSpotter },
-  { name: "crtsh", handler: fetchFromCrtSh }
+  { name: "crtsh", handler: fetchFromCrtSh },
+  { name: "shodan", handler: fetchFromShodan },
+  { name: "binaryedge", handler: fetchFromBinaryEdge },
+  { name: "virustotal", handler: fetchFromVirusTotal },
+  { name: "builtwith", handler: fetchFromBuiltWith },
+  { name: "bevigil", handler: fetchFromBeVigil },
+  { name: "netlas", handler: fetchFromNetlas },
+  { name: "fofa", handler: fetchFromFofa },
+  { name: "fullhunt", handler: fetchFromFullHunt },
+  { name: "leakix", handler: fetchFromLeakIX },
+  { name: "chaos", handler: fetchFromChaos },
+  { name: "intelx", handler: fetchFromIntelX }
   // Add more handlers as they are implemented
 ];
 
@@ -199,5 +213,114 @@ async function fetchFromCrtSh(domain: string): Promise<string[]> {
   }
 }
 
-// Continue implementing other API functions...
-// For brevity, I'm not including all implementations, but you would need to implement each one 
+// Add placeholder implementations for the remaining API handlers
+async function fetchFromShodan(domain: string): Promise<string[]> {
+  if (!API_KEYS.SHODAN) return [];
+  
+  try {
+    const response = await axios.get(
+      `https://api.shodan.io/dns/domain/${domain}`,
+      {
+        params: {
+          key: API_KEYS.SHODAN,
+        },
+        timeout: 10000,
+      }
+    );
+    
+    const subdomains: string[] = [];
+    if (response.data && response.data.subdomains) {
+      response.data.subdomains.forEach((sub: string) => {
+        subdomains.push(`${sub}.${domain}`);
+      });
+    }
+    
+    return subdomains;
+  } catch (error: any) {
+    console.error("Shodan API error:", error.message);
+    return [];
+  }
+}
+
+async function fetchFromBinaryEdge(domain: string): Promise<string[]> {
+  if (!API_KEYS.BINARYEDGE) return [];
+  
+  try {
+    const response = await axios.get(
+      `https://api.binaryedge.io/v2/query/domains/subdomain/${domain}`,
+      {
+        headers: {
+          'X-Key': API_KEYS.BINARYEDGE,
+        },
+        timeout: 10000,
+      }
+    );
+    
+    const subdomains: string[] = [];
+    if (response.data && response.data.subdomains) {
+      response.data.subdomains.forEach((sub: string) => {
+        subdomains.push(sub);
+      });
+    }
+    
+    return subdomains;
+  } catch (error: any) {
+    console.error("BinaryEdge API error:", error.message);
+    return [];
+  }
+}
+
+// Implementations for other API handlers can be added similarly
+async function fetchFromVirusTotal(domain: string): Promise<string[]> {
+  if (!API_KEYS.VIRUSTOTAL) return [];
+  // Implementation will be similar to others
+  return [];
+}
+
+async function fetchFromBuiltWith(domain: string): Promise<string[]> {
+  if (!API_KEYS.BUILTWITH) return [];
+  // Implementation will be similar to others
+  return [];
+}
+
+async function fetchFromBeVigil(domain: string): Promise<string[]> {
+  if (!API_KEYS.BEVIGIL) return [];
+  // Implementation will be similar to others
+  return [];
+}
+
+async function fetchFromNetlas(domain: string): Promise<string[]> {
+  if (!API_KEYS.NETLAS) return [];
+  // Implementation will be similar to others
+  return [];
+}
+
+async function fetchFromFofa(domain: string): Promise<string[]> {
+  if (!API_KEYS.FOFA) return [];
+  // Implementation will be similar to others
+  return [];
+}
+
+async function fetchFromFullHunt(domain: string): Promise<string[]> {
+  if (!API_KEYS.FULLHUNT) return [];
+  // Implementation will be similar to others
+  return [];
+}
+
+async function fetchFromLeakIX(domain: string): Promise<string[]> {
+  if (!API_KEYS.LEAKIX) return [];
+  // Implementation will be similar to others
+  return [];
+}
+
+async function fetchFromChaos(domain: string): Promise<string[]> {
+  if (!API_KEYS.CHAOS) return [];
+  // Implementation will be similar to others
+  return [];
+}
+
+async function fetchFromIntelX(domain: string): Promise<string[]> {
+  if (!API_KEYS.INTELX) return [];
+  // Implementation will be similar to others
+  return [];
+} 
