@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -20,16 +20,6 @@ export default function Login() {
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [resetError, setResetError] = useState('');
 
-  // Check for error in URL query params
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const errorParam = searchParams.get('error');
-    
-    if (errorParam) {
-      setError('Authentication failed. Please check your credentials and try again.');
-    }
-  }, []);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -40,16 +30,20 @@ export default function Login() {
 
     try {
       const result = await signIn('credentials', {
-        redirect: true,
+        redirect: false,
         email: email.trim(),
         password: password.trim(),
-        callbackUrl: '/dashboard',
       });
 
-      // Router push removed as NextAuth will handle the redirect
+      if (result?.error) {
+        throw new Error('Invalid email or password');
+      }
+
+      router.push('/dashboard');
       
     } catch (error: any) {
       setError(error.message);
+    } finally {
       setIsLoading(false);
     }
   };

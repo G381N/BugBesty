@@ -50,11 +50,15 @@ export default function Signup() {
 
       // Attempt to sign in
       const signInResult = await signIn('credentials', {
-        redirect: true,
+        redirect: false,
         email: email.trim(),
         password: password.trim(),
-        callbackUrl: '/dashboard',
       });
+
+      if (signInResult?.error) {
+        console.error('Sign in error:', signInResult.error);
+        throw new Error('Account created but failed to sign in automatically');
+      }
 
       // Instead of redirecting, show questionnaire
       setShowQuestionnaire(true);
