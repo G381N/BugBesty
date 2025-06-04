@@ -30,21 +30,16 @@ export default function Login() {
 
     try {
       const result = await signIn('credentials', {
-        redirect: false,
+        redirect: true,
         email: email.trim(),
         password: password.trim(),
         callbackUrl: '/dashboard',
       });
 
-      if (result?.error) {
-        throw new Error('Invalid email or password');
-      }
-
-      router.push('/dashboard');
+      // Router push removed as NextAuth will handle the redirect
       
     } catch (error: any) {
       setError(error.message);
-    } finally {
       setIsLoading(false);
     }
   };
