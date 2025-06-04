@@ -238,9 +238,10 @@ export default function ReportGeneration() {
     // Convert files to base64 Data URLs for persistence across sessions
     files.forEach(file => {
       const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          setPreviewUrls(prev => [...prev, event.target.result as string]);
+      reader.onload = (event: ProgressEvent<FileReader>) => {
+        const target = event.target;
+        if (target && target.result) {
+          setPreviewUrls(prev => [...prev, target.result as string]);
         }
       };
       reader.readAsDataURL(file);
