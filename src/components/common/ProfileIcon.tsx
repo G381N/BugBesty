@@ -35,31 +35,14 @@ export default function ProfileIcon({ size = 'md', showName = true }: ProfileIco
   
   // Fetch user data from Firestore
   useEffect(() => {
-    let isMounted = true;
-    let retryCount = 0;
-    const MAX_RETRIES = 3;
-    
     async function fetchUserData() {
-      if (!session) {
-        if (isMounted) setIsLoadingUser(false);
-        return;
-      }
-      
-      if (retryCount >= MAX_RETRIES) {
-        console.error('Maximum retry count reached for user data fetching');
-        if (isMounted) setIsLoadingUser(false);
-        return;
-      }
-      
       if (session?.user?.email) {
         // Immediately set user data from session to prevent loading state
-        if (isMounted) {
-          setUserData({
-            name: session.user.name || '',
-            email: session.user.email
-          });
-          setIsLoadingUser(false);
-        }
+        setUserData({
+          name: session.user.name || '',
+          email: session.user.email
+        });
+        setIsLoadingUser(false);
         
         // Optional: Try to get additional data from Firestore, but don't show loading state
         try {
@@ -69,7 +52,7 @@ export default function ProfileIcon({ size = 'md', showName = true }: ProfileIco
           const q = query(usersRef, where('email', '==', session.user.email));
           const querySnapshot = await getDocs(q);
           
-          if (!querySnapshot.empty && isMounted) {
+          if (!querySnapshot.empty) {
             const userDoc = querySnapshot.docs[0];
             const firestoreData = userDoc.data();
             console.log('Found additional user data in Firestore:', firestoreData);
@@ -84,20 +67,15 @@ export default function ProfileIcon({ size = 'md', showName = true }: ProfileIco
           }
         } catch (error) {
           console.error('Error fetching additional Firestore data (non-critical):', error);
-          retryCount++;
           // No need to do anything - we're already showing session data
         }
-      } else if (isMounted) {
-        // If no email in session, don't keep trying
-        setIsLoadingUser(false);
       }
     }
     
     fetchUserData();
     
-    return () => {
-      isMounted = false;
-    };
+    // No listener needed - just use session data
+    return () => {};
   }, [session]);
   
   useEffect(() => {

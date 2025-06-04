@@ -1,16 +1,15 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 
 export default function Login() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -21,16 +20,6 @@ export default function Login() {
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [resetError, setResetError] = useState('');
 
-  // Check for URL params for error messages
-  useEffect(() => {
-    const errorParam = searchParams.get('error');
-    if (errorParam) {
-      setError(errorParam === 'true' 
-        ? 'Authentication failed. Please check your credentials.' 
-        : errorParam);
-    }
-  }, [searchParams]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -40,34 +29,20 @@ export default function Login() {
     setError('');
 
     try {
-      console.log('Attempting to sign in with credentials');
       const result = await signIn('credentials', {
         redirect: false,
         email: email.trim(),
         password: password.trim(),
       });
 
-      console.log('Sign in result:', result);
-
-      if (!result) {
-        throw new Error('Authentication failed. No response from server.');
-      }
-      
-      if (result.error) {
-        console.error('Login error from NextAuth:', result.error);
-        throw new Error(result.error || 'Invalid email or password');
+      if (result?.error) {
+        throw new Error('Invalid email or password');
       }
 
-      if (result.ok) {
-        console.log('Login successful, redirecting to dashboard');
-        router.push('/dashboard');
-      } else {
-        throw new Error('Login failed. Please try again.');
-      }
+      router.push('/dashboard');
       
     } catch (error: any) {
-      console.error('Login error:', error);
-      setError(error.message || 'Authentication failed. Please try again.');
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
