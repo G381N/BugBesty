@@ -106,6 +106,18 @@ export const authOptions: NextAuthOptions = {
       
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Ensure all redirects work properly on Render
+      if (url.startsWith('/')) {
+        // For relative URLs, make them absolute using baseUrl
+        return `${baseUrl}${url}`;
+      } else if (new URL(url).origin === baseUrl) {
+        // If it's already an absolute URL with our origin, return it as is
+        return url;
+      }
+      // For all other cases, redirect to the base URL
+      return baseUrl;
+    }
   },
 };
 

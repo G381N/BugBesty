@@ -53,6 +53,7 @@ export default function Signup() {
         redirect: false,
         email: email.trim(),
         password: password.trim(),
+        callbackUrl: '/dashboard',
       });
 
       if (signInResult?.error) {

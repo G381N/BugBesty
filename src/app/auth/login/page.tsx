@@ -33,6 +33,7 @@ export default function Login() {
         redirect: false,
         email: email.trim(),
         password: password.trim(),
+        callbackUrl: '/dashboard',
       });
 
       if (result?.error) {
