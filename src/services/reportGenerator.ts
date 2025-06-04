@@ -1,4 +1,5 @@
-const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+// Use server-side environment variable
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 interface ReportData {
   projectName: string;

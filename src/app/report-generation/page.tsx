@@ -61,6 +61,23 @@ export default function ReportGeneration() {
   const [receiverName, setReceiverName] = useState('');
   const [email, setEmail] = useState('');
   const [isLoadingNotes, setIsLoadingNotes] = useState(false);
+  const [geminiApiAvailable, setGeminiApiAvailable] = useState(false);
+
+  // Add function to check if Gemini API is available
+  const checkGeminiApiAvailable = useCallback(async () => {
+    try {
+      const response = await fetch('/api/check-gemini-api');
+      const data = await response.json();
+      setGeminiApiAvailable(!!data.available);
+    } catch (error) {
+      console.error('Failed to check Gemini API availability:', error);
+      setGeminiApiAvailable(false);
+    }
+  }, []);
+  
+  useEffect(() => {
+    checkGeminiApiAvailable();
+  }, [checkGeminiApiAvailable]);
 
   // Define fetchSubdomainsAndVulnerabilities using useCallback before it's used in useEffect
   const fetchSubdomainsAndVulnerabilities = useCallback(async () => {
@@ -281,7 +298,7 @@ export default function ReportGeneration() {
       localStorage.setItem('reportEmail', email);
 
       setLoadingProgress(70);
-      const apiKeyAvailable = !!process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+      const apiKeyAvailable = geminiApiAvailable;
       
       if (apiKeyAvailable) {
         setLoadingStage('Generating report with Gemini AI...');
@@ -432,7 +449,7 @@ export default function ReportGeneration() {
             Create a comprehensive bug bounty report for your findings.
           </p>
 
-          {!process.env.NEXT_PUBLIC_GEMINI_API_KEY && (
+          {!geminiApiAvailable && (
             <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 mb-8">
               <div className="flex items-start gap-3">
                 <svg className="w-6 h-6 text-yellow-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -442,7 +459,7 @@ export default function ReportGeneration() {
                   <h3 className="text-yellow-500 font-medium text-base mb-1">Gemini API Key Not Configured</h3>
                   <p className="text-foreground/70 text-sm">
                     The report generation feature works best with a Gemini API key. Without it, a simplified report will be generated. 
-                    See the <a href="https://github.com/yourusername/bugbesty#report-generation-feature" target="_blank" rel="noopener noreferrer" className="text-primary underline">README</a> for setup instructions.
+                    See the <a href="https://github.com/G381N/BugBesty#setting-up-your-gemini-api-key" target="_blank" rel="noopener noreferrer" className="text-primary underline">README</a> for setup instructions.
                   </p>
                 </div>
               </div>

@@ -50,12 +50,12 @@ The report generation feature requires a Google Gemini API key to work properly.
 4. Create a new API key or use an existing one
 5. Copy the API key
 
-### Setting Up Your API Key
+### Setting Up Your Gemini API Key
 
 Add your Gemini API key to the `.env` file in the frontend directory:
 
 ```
-NEXT_PUBLIC_GEMINI_API_KEY=your_api_key_here
+GEMINI_API_KEY=your_api_key_here
 ```
 
 After adding the API key, restart the development server for the changes to take effect:
@@ -69,7 +69,7 @@ npm run dev
 If you encounter API key errors when generating reports:
 
 1. Make sure you've added the correct API key to the `.env` file
-2. Ensure the environment variable is named exactly `NEXT_PUBLIC_GEMINI_API_KEY`
+2. Ensure the environment variable is named exactly `GEMINI_API_KEY` (not NEXT_PUBLIC_GEMINI_API_KEY)
 3. Restart the development server after making changes
 4. Check that your API key is active and has not reached usage limits
 
