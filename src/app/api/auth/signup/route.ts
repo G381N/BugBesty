@@ -21,6 +21,15 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    
+    // Check password length
+    if (password.length < 6) {
+      console.log('Password too short');
+      return NextResponse.json(
+        { error: 'Password must be at least 6 characters long' },
+        { status: 400 }
+      );
+    }
 
     let userId = null;
     
@@ -88,6 +97,14 @@ export async function POST(request: Request) {
         return NextResponse.json(
           { error: 'Email already registered' },
           { status: 409 }
+        );
+      }
+      
+      // Better error message for weak password
+      if (firebaseError.code === 'auth/weak-password') {
+        return NextResponse.json(
+          { error: 'Password is too weak. It must be at least 6 characters long.' },
+          { status: 400 }
         );
       }
 
